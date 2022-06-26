@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="customComments">
+
+    <resultMap id="customTaskCommentResultMap" type="com.arifng.camunda.dto.CustomCommentDto">
+        <id property="id" column="tID_" jdbcType="VARCHAR"/>
+        <result property="name" column="tNAME_" jdbcType="VARCHAR"/>
+        <result property="assignee" column="tASSIGNEE_" jdbcType="VARCHAR"/>
+        <result property="created" column="tCREATE_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="due" column="tDUE_DATE_" jdbcType="TIMESTAMP"/>
+        <result property="followUp" column="tFOLLOW_UP_DATE_" jdbcType="TIMESTAMP"/>
+        <result property="delegationState" column="tDELEGATION_ " jdbcType="VARCHAR"/>
+        <result property="description" column="tDESCRIPTION_" jdbcType="VARCHAR"/>
+        <result property="executionId" column="tEXECUTION_ID_" jdbcType="VARCHAR"/>
+        <result property="owner" column="tOWNER_" jdbcType="VARCHAR"/>
+        <result property="parentTaskId" column="tPARENT_TASK_ID_" jdbcType="VARCHAR"/>
+        <result property="priority" column="tPRIORITY_" jdbcType="INTEGER"/>
+        <result property="processDefinitionId" column="tPROC_DEF_ID_" jdbcType="VARCHAR"/>
+        <result property="processInstanceId" column="tPROC_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="taskDefinitionKey" column="tTASK_DEF_KEY_" jdbcType="VARCHAR"/>
+        <result property="caseExecutionId" column="tCASE_EXECUTION_ID_" jdbcType="VARCHAR"/>
+        <result property="caseInstanceId" column="tCASE_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="caseDefinitionId" column="tCASE_DEF_ID_" jdbcType="VARCHAR"/>
+        <result property="suspended" column="tSUSPENSION_STATE_" jdbcType="INTEGER"/>
+        <result property="tenantId" column="tTENANT_ID_" jdbcType="VARCHAR"/>
+
+        <!--<association property="task" javaType="org.camunda.bpm.engine.task.Task">-->
+            <!--<id property="id" column="ID_"/>-->
+            <!--<result property="name" column="NAME_"/>-->
+        <!--</association>-->
+        <collection ofType="org.camunda.bpm.engine.rest.dto.task.CommentDto" property="comments"
+                    resultMap="customCommentResultMap" column="id"/>
+    </resultMap>
+
+    <resultMap id="customCommentResultMap" type="org.camunda.bpm.engine.rest.dto.task.CommentDto">
+        <id property="id" column="cID_" jdbcType="VARCHAR"/>
+        <result property="userId" column="cUSER_ID_" jdbcType="VARCHAR"/>
+        <result property="time" column="cTIME_" jdbcType="TIMESTAMP"/>
+        <result property="taskId" column="cTASK_ID_" jdbcType="VARCHAR"/>
+        <result property="message" column="cMESSAGE_" jdbcType="VARCHAR"/>
+        <result property="removalTime" column="cREMOVAL_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="rootProcessInstanceId" column="cROOT_PROC_INST_ID_" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="customActivityCommentResultMap" type="com.arifng.camunda.dto.ActivityInstanceDto">
+        <id property="id" column="aID_" jdbcType="VARCHAR"/>
+        <result property="parentActivityInstanceId" column="aPARENT_ACT_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="activityId" column="aACT_ID_" jdbcType="VARCHAR"/>
+        <result property="activityName" column="aACT_NAME_" jdbcType="VARCHAR"/>
+        <result property="activityType" column="aACT_TYPE_" jdbcType="VARCHAR"/>
+        <result property="processDefinitionKey" column="aPROC_DEF_KEY_" jdbcType="VARCHAR"/>
+        <result property="processDefinitionId" column="aPROC_DEF_ID_" jdbcType="VARCHAR"/>
+        <result property="processInstanceId" column="aPROC_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="executionId" column="aEXECUTION_ID_" jdbcType="VARCHAR"/>
+        <result property="taskId" column="aTASK_ID_" jdbcType="VARCHAR"/>
+        <result property="calledProcessInstanceId" column="aCALL_PROC_INST_ID_" jdbcType="VARCHAR"/>
+        <result property="calledCaseInstanceId" column="aCALL_CASE_INST_ID_" jdbcType="INTEGER"/>
+        <result property="assignee" column="aASSIGNEE_" jdbcType="VARCHAR"/>
+        <result property="startTime" column="aSTART_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="aEND_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="durationInMillis" column="aDURATION_" jdbcType="BIGINT"/>
+        <result property="tenantId" column="aTENANT_ID_" jdbcType="VARCHAR"/>
+        <result property="removalTime" column="aREMOVAL_TIME_" jdbcType="TIMESTAMP"/>
+        <result property="rootProcessInstanceId" column="aROOT_PROC_INST_ID_" jdbcType="VARCHAR"/>
+
+        <collection ofType="org.camunda.bpm.engine.rest.dto.task.CommentDto" property="comments"
+                    resultMap="customCommentResultMap" column="id"/>
+    </resultMap>
+
+    <select id="selectCommentsPerProcess" resultMap="customTaskCommentResultMap"
+            parameterType="org.camunda.bpm.engine.impl.db.ListQueryParameterObject">
+        ${limitBefore}
+        select distinct
+        T.ID_ as tID_,
+        T.NAME_ as tNAME_,
+        T.ASSIGNEE_ as tASSIGNEE_,
+        T.CREATE_TIME_ as tCREATE_TIME_,
+        T.DUE_DATE_ as tDUE_DATE_,
+        T.FOLLOW_UP_DATE_ as tFOLLOW_UP_DATE_,
+        T.DELEGATION_ as tDELEGATION_,
+        T.DESCRIPTION_ as tDESCRIPTION_,
+        T.EXECUTION_ID_ as tEXECUTION_ID_,
+        T.OWNER_ as tOWNER_,
+        T.PARENT_TASK_ID_ as tPARENT_TASK_ID_,
+        T.PRIORITY_ as tPRIORITY_,
+        T.PROC_DEF_ID_ as tPROC_DEF_ID_,
+        T.PROC_INST_ID_ as tPROC_INST_ID_,
+        T.TASK_DEF_KEY_ as tTASK_DEF_KEY_,
+        T.CASE_EXECUTION_ID_ as tCASE_EXECUTION_ID_,
+        T.CASE_INST_ID_ as tCASE_INST_ID_,
+        T.CASE_DEF_ID_ as tCASE_DEF_ID_,
+        T.SUSPENSION_STATE_ as tSUSPENSION_STATE_,
+        T.TENANT_ID_ as tTENANT_ID_,
+
+        C.ID_ as cID_,
+        C.USER_ID_ as cUSER_ID_,
+        C.TIME_ as cTIME_,
+        C.TASK_ID_ as cTASK_ID_,
+        C.MESSAGE_ as cMESSAGE_,
+        C.REMOVAL_TIME_ as cREMOVAL_TIME_,
+        C.ROOT_PROC_INST_ID_ as cROOT_PROC_INST_ID_
+
+        from ${prefix}ACT_RU_TASK T
+        right outer join ${prefix}ACT_HI_COMMENT C on T.ID_ = C.TASK_ID_
+        <where>
+            <if test="parameter != null">
+                C.PROC_INST_ID_ = #{parameter}
+            </if>
+        </where>
+        ${limitAfter}
+    </select>
+
+    <select id="selectActivityWithComment" resultMap="customActivityCommentResultMap"
+            parameterType="org.camunda.bpm.engine.impl.db.ListQueryParameterObject">
+        ${limitBefore}
+        select distinct
+        A.ID_ as aID_,
+        A.PARENT_ACT_INST_ID_ as aPARENT_ACT_INST_ID_,
+        A.ACT_ID_ as aACT_ID_,
+        A.ACT_NAME_ as aACT_NAME_,
+        A.ACT_TYPE_ as aACT_TYPE_,
+        A.PROC_DEF_KEY_ as aPROC_DEF_KEY_,
+        A.PROC_DEF_ID_ as aPROC_DEF_ID_,
+        A.PROC_INST_ID_ as aPROC_INST_ID_,
+        A.EXECUTION_ID_ as aEXECUTION_ID_,
+        A.TASK_ID_ as aTASK_ID_,
+        A.CALL_PROC_INST_ID_ as aCALL_PROC_INST_ID_,
+        A.CALL_CASE_INST_ID_ as aCALL_CASE_INST_ID_,
+        A.ASSIGNEE_ as aASSIGNEE_,
+        A.START_TIME_ as aSTART_TIME_,
+        A.END_TIME_ as aEND_TIME_,
+        A.DURATION_ as aDURATION_,
+        A.TENANT_ID_ as aTENANT_ID_,
+        A.REMOVAL_TIME_ as aREMOVAL_TIME_,
+        A.ROOT_PROC_INST_ID_ as aROOT_PROC_INST_ID_,
+
+        C.ID_ as cID_,
+        C.USER_ID_ as cUSER_ID_,
+        C.TIME_ as cTIME_,
+        C.TASK_ID_ as cTASK_ID_,
+        C.MESSAGE_ as cMESSAGE_,
+        C.REMOVAL_TIME_ as cREMOVAL_TIME_,
+        C.ROOT_PROC_INST_ID_ as cROOT_PROC_INST_ID_
+
+        from ${prefix}ACT_HI_ACTINST A
+        left outer join ${prefix}ACT_HI_COMMENT C
+        on A.PROC_INST_ID_ = C.PROC_INST_ID_ and A.TASK_ID_ = C.TASK_ID_
+        <where>
+            <if test="parameter != null">
+                A.PROC_INST_ID_ = #{parameter}
+            </if>
+        </where>
+        ${limitAfter}
+    </select>
+</mapper>
