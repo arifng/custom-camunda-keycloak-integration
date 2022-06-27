@@ -27,6 +27,7 @@ All information related to database, keycloak server and spring security oauth2 
 ## Sample output for REST endpoints
 ### Get comments of a process grouping by task
 Input : `/api/process/962c5aad-4ae8-11ec-ad37-00dbdf8ca9fb/comments-pretty`
+
 Output :
 ```
 [
