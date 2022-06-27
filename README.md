@@ -1,7 +1,9 @@
 # Custom Camunda with Keycloak Integration
 
 ## Description
-This project implements custom endpoints to get data from `Camunda` tables. From this project, all camunda endpoints are 
+This project runs as standalone application with `Camunda BPM` and enable all features of camunda bpm.
+
+It implements custom endpoints to get data from `Camunda` tables. From this project, all camunda endpoints are 
 available, along with that, few custom endpoints implemented. For example, I have implemented comments customisation and used best 
 practice to pull data from `H2 database` using `MyBatis` which is recommended by camunda community. Anyone can follow 
 this example and implement desired custom endpoints.
