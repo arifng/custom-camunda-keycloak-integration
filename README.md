@@ -13,7 +13,7 @@ run this application, it will directly go to keycloak login page. After providin
 user will redirect to camunda dashboard. After that, all camunda features will be available. But for this there are some keycloak 
 constraints that need to provide.
 
-## Features of this project
+## Features
 - Custom endpoints implementation - create comment, get all comments by process ID, get all comments by process ID with 
 grouping of task ID.
 - Keycloak integration
