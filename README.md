@@ -17,7 +17,7 @@ constraints that need to provide.
 - Custom endpoints implementation - create comment, get all comments by process ID, get all comments by process ID with 
 grouping of task ID.
 - Keycloak integration
-- NB - Only custom REST endpoints are implemented here, no UX related work is done.
+NB - Only custom REST endpoints are implemented here, no UX related work is done.
 
 
 ## Constraints for database and keycloak integration
