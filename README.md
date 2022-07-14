@@ -79,3 +79,4 @@ Output :
     }
 ]
 ```
+NB - to test rest endpoints, please check the document `using post man to test apis.docx`.
